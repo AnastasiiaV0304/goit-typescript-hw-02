@@ -1,0 +1,17 @@
+.image {
+  width: 400px;
+  height: 300px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.imageContainer:hover {
+  transform: scale(1.1);
+}
+
+.imageContainer {
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
