@@ -1,6 +1,14 @@
 import Modal from "react-modal";
+import { Image } from "../App/App";
+import { FC } from "react";
 
-const ImageModal = ({ image, isOpen, onRequestClose }) => {
+interface ImageModalProps {
+  image: Image | null;
+  isOpen: boolean;
+  onRequestClose: () => void;
+}
+
+const ImageModal: FC<ImageModalProps> = ({ image, isOpen, onRequestClose }) => {
   if (!image) {
     return null;
   }
@@ -27,7 +35,7 @@ const ImageModal = ({ image, isOpen, onRequestClose }) => {
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel="Image Modal"
-      appElement={document.getElementById("root")}
+      appElement={document.getElementById("root") as HTMLElement}
     >
       <img src={image.urls.regular} alt={image.alt_description} />
     </Modal>

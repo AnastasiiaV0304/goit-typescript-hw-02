@@ -8,14 +8,24 @@ import ImageGallery from "../ImageGallery/ImageGallery";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "../ImageModal/ImageModal";
 
+ export interface Image {
+  urls: {
+    regular: string;
+    small: string;
+  };
+  alt_description: string;
+  id: string;
+  length: number;
+}
+
 function App() {
-  const [images, setImages] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [images, setImages] = useState<Image[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
   useEffect(() => {
     async function fetchImagesByQuery() {
@@ -25,7 +35,7 @@ function App() {
         if (page === 1) {
           setImages(data.results);
         } else {
-          setImages((prevImages) => [...prevImages, ...data.results]);
+          setImages((prevImages) => [...(prevImages || []), ...data.results]);
         }
         setIsError(false);
       } catch (error) {
@@ -42,7 +52,7 @@ function App() {
     }
   }, [query, page]);
 
-  const onSetSearchQuery = (searchQuery) => {
+  const onSetSearchQuery = (searchQuery: string) => {
     setQuery(searchQuery);
     setPage(1);
   };
@@ -51,20 +61,19 @@ function App() {
     setPage((prevPage) => prevPage + 1);
   };
 
-  const openModal = (imageUrl) => {
-    setModalIsOpen(true);
-    setSelectedImage(imageUrl);
-  };
+ const openModal = (image: Image) => {
+  setModalIsOpen(true);
+  setSelectedImage(image);
+};
 
   const closeModal = () => {
     setModalIsOpen(false);
-    setSelectedImage(null);
   };
 
   return (
     <div className={css.wrapper}>
       <SearchBar onSubmit={onSetSearchQuery} />
-      {isLoading && <Loader />}
+      {isLoading && <Loader isLoading={true} />}
       {isError && <ErrorMessage />}
       {images && <ImageGallery images={images} onImageClick={openModal} />}
       {images && <LoadMoreBtn onClick={handleMoreImages} />}

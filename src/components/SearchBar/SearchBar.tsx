@@ -3,10 +3,14 @@ import css from "./SearchBar.module.css";
 import { Toaster } from "react-hot-toast";
 import { showError } from "../../supplements/toaster";
 
-const SearchBar = ({ onSubmit }) => {
-  const [request, setRequest] = useState("");
+interface SearchBarProps {
+  onSubmit: (request: string) => void;
+}
 
-  const handleSubmit = (evt) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
+  const [request, setRequest] = useState<string>("");
+
+  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     if (request.trim() === "") {
       showError("Oops! Looks like you forgot to fill out the input field.");
@@ -15,7 +19,7 @@ const SearchBar = ({ onSubmit }) => {
     onSubmit(request);
   };
 
-  const handleChange = (evt) => {
+  const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setRequest(evt.target.value);
   };
 
@@ -41,3 +45,4 @@ const SearchBar = ({ onSubmit }) => {
 };
 
 export default SearchBar;
+
